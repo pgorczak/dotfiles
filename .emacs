@@ -11,6 +11,7 @@
 ;; define my packages
 (defvar my-packages
   '(better-defaults
+    cider
     clojure-mode
     company
     dracula-theme
@@ -18,7 +19,9 @@
     fill-column-indicator
     magit
     neotree
-    parinfer))
+    parinfer
+    racer
+    rust-mode))
 
 ;; install my packages
 (mapc
@@ -66,6 +69,13 @@
 ;; clj/cljs
 (add-hook 'clojure-mode-hook #'parinfer-mode)
 (add-hook 'clojurescript-mode-hook #'parinfer-mode)
+
+;; rust
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+(require 'rust-mode)
+(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 
 ;; mark this as safe
 (load-theme 'dracula)
