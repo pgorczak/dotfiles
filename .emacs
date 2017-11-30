@@ -36,6 +36,7 @@
 (setq-default fill-column 80)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq neo-theme 'arrow)
+(load-theme 'dracula t)
 
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
@@ -76,6 +77,3 @@
 (add-hook 'racer-mode-hook #'company-mode)
 (require 'rust-mode)
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-
-;; mark this as safe
-(load-theme 'dracula)
