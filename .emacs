@@ -37,6 +37,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq neo-theme 'arrow)
 (load-theme 'dracula t)
+(setq inhibit-startup-screen t)
 
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
