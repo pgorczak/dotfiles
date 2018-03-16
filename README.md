@@ -8,3 +8,6 @@ Generic dotfiles repo
 * https://draculatheme.com/
 * https://github.com/dracula/gnome-terminal
 * https://draculatheme.com/zsh/
+
+## Emacs over SSH
+https://www.emacswiki.org/emacs/TrampMode#toc9
