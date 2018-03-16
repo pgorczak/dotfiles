@@ -3,7 +3,7 @@ Generic dotfiles repo
 
 ## Shell setup
 
-* tmux
+* ~~tmux~~
 * zsh with oh-my-zsh
 * https://draculatheme.com/
 * https://github.com/dracula/gnome-terminal
