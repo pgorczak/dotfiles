@@ -18,6 +18,7 @@
     exec-path-from-shell
     fill-column-indicator
     magit
+    markdown-mode
     neotree
     parinfer
     racer
@@ -67,6 +68,10 @@
 ;; general source code
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'fci-mode)
+
+;; markdown
+(add-hook 'markdown-mode-hook 'auto-fill-mode)
+(add-hook 'markdown-mode-hook 'fci-mode)
 
 ;; clj/cljs
 (add-hook 'clojure-mode-hook #'parinfer-mode)
