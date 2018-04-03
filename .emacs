@@ -14,6 +14,8 @@
     cider
     clojure-mode
     company
+    docker-compose-mode
+    dockerfile-mode
     dracula-theme
     exec-path-from-shell
     fill-column-indicator
