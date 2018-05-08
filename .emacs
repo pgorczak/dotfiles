@@ -5,33 +5,60 @@
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; set to nil or t
+(defvar +clojure nil)
+(defvar +docker nil)
+(defvar +macos nil)
+;; Requires flake8
+;; configured below for --user installation
+(defvar +python nil)
+;; Requires setup
+;; https://github.com/racer-rust/racer#installation
+(defvar +rust nil)
+;; Requires synced work folder
+(defvar +work nil)
 
 ;; define my packages
 (defvar my-packages
-  '(better-defaults
-    cider
-    clojure-mode
-    company
-    docker-compose-mode
-    dockerfile-mode
-    dracula-theme
-    exec-path-from-shell
-    fill-column-indicator
-    magit
-    markdown-mode
-    neotree
-    parinfer
-    racer
-    rust-mode))
+  (append
+    '(better-defaults
+      company
+      dracula-theme
+      fill-column-indicator
+      magit
+      markdown-mode
+      multi-term
+      neotree)
+    (when +clojure
+      '(cider
+        clojure-mode
+        parinfer))
+    (when +macos
+      '(exec-path-from-shell))
+    (when +docker
+      '(docker-compose-mode
+        dockerfile-mode))
+    (when +python
+      '(flycheck))
+    (when +rust
+      '(racer
+        rust-mode))))
 
 ;; install my packages
-(mapc
-   #'(lambda (package)
-       (unless (package-installed-p package)
-         (package-install package)))
-   my-packages)
+;; http://wikemacs.org/wiki/Package.el#Install_packages_automatically_on_startup
+
+(defun my-packages-installed-p ()
+  (cl-loop for p in my-packages
+           when (not (package-installed-p p)) do (cl-return nil)
+           finally (cl-return t)))
+
+(unless (my-packages-installed-p)
+  ;; check for new packages (package versions)
+  (package-refresh-contents)
+  ;; install the missing packages
+  (dolist (p my-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
 
 (require 'better-defaults)
 
@@ -41,28 +68,31 @@
 (setq neo-theme 'arrow)
 (load-theme 'dracula t)
 (setq inhibit-startup-screen t)
+;; make default frame accommodate 3-digit line nums and fci
+(when (display-graphic-p)
+  (add-to-list 'default-frame-alist (cons 'width 85)))
 
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
 (with-eval-after-load 'org
-  (setq org-log-done 'time)
-  (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "DONE")))
   (add-hook 'org-mode-hook #'visual-line-mode))
 
 ;; Org work and publishing
-(set-variable 'org-agenda-files (list "~/Documents/Work"))
-(load-file "~/Documents/Work/publish.el")
-(setq org-publish-project-alist
-      (append '()
-        (alist-entries "~/Documents/Work" "~/Documents/publish_Work")))
+(when +work
+  (set-variable 'org-agenda-files (list "~/Documents/Work"))
+  (load-file "~/Documents/Work/publish.el")
+  (setq org-publish-project-alist
+        (append '()
+          (alist-entries "~/Documents/Work" "~/Documents/publish_Work"))))
 
 ;; OS X Stuff
-(setq default-input-method "MacOSX")
-(setq mac-command-modifier 'meta
-      mac-option-modifier nil)
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
+(when +macos
+  (setq default-input-method "MacOSX")
+  (setq mac-command-modifier 'meta
+        mac-option-modifier nil)
+  (require 'exec-path-from-shell)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
 
 ;; git
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -76,12 +106,19 @@
 (add-hook 'markdown-mode-hook 'fci-mode)
 
 ;; clj/cljs
-(add-hook 'clojure-mode-hook #'parinfer-mode)
-(add-hook 'clojurescript-mode-hook #'parinfer-mode)
+(when +clojure
+  (add-hook 'clojure-mode-hook #'parinfer-mode)
+  (add-hook 'clojurescript-mode-hook #'parinfer-mode))
+
+;; python
+(when +python
+  (setq flycheck-python-flake8-executable "~/.local/bin/flake8")
+  (global-flycheck-mode))
 
 ;; rust
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-(require 'rust-mode)
-(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+(when +rust
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (require 'rust-mode)
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))

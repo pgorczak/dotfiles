@@ -1,18 +1,19 @@
 # dotfiles
 Generic dotfiles repo
 
+## Steps
+
+* [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+* *~/.emacs* should look like
+
+    ;; (package-initialize)
+    (load-file "dotfiles/.emacs")
+
+* Enable/disable stuff in [.emacs](.emacs)
+
 ## Shell setup
 
-* ~~tmux~~
-* zsh with oh-my-zsh
-* https://draculatheme.com/
-* https://github.com/dracula/gnome-terminal
-* https://draculatheme.com/zsh/
+*test driving multi-term*
 
-```
-mkdir -p ~/.config/tilix/schemes && cd ~/.config/tilix/schemes 
-curl -L -O https://raw.githubusercontent.com/storm119/Tilix-Themes/master/Themes/dracula.json
-```
-
-## Emacs over SSH
+## Fix for Emacs/tramp-mode
 https://www.emacswiki.org/emacs/TrampMode#toc9
