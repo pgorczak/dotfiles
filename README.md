@@ -5,9 +5,10 @@ Generic dotfiles repo
 
 * [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 * *~/.emacs* should look like
-
-    ;; (package-initialize)
-    (load-file "dotfiles/.emacs")
+```
+;; (package-initialize)
+(load-file "dotfiles/.emacs")
+```
 
 * Enable/disable stuff in [.emacs](.emacs)
 
