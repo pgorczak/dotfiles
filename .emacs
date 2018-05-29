@@ -25,9 +25,11 @@
       company
       dracula-theme
       fill-column-indicator
+      flymd
       magit
       markdown-mode
       multi-term
+      multiple-cursors
       neotree)
     (when +clojure
       '(cider
@@ -72,6 +74,15 @@
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist (cons 'width 85)))
 
+;; multi line editing
+(require 'multiple-cursors)
+(global-set-key (kbd "C-|") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+
+;; Terminal
+(global-set-key (kbd "\C-x t") 'multi-term)
+
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
 (with-eval-after-load 'org
@@ -100,10 +111,15 @@
 ;; general source code
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'fci-mode)
+(add-hook 'prog-mode-hook 'company-mode)
 
 ;; markdown
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 (add-hook 'markdown-mode-hook 'fci-mode)
+
+;; js
+(setq js-expr-indent-offset 2)
+(setq js-indent-level 2)
 
 ;; clj/cljs
 (when +clojure
