@@ -24,6 +24,7 @@
     '(better-defaults
       company
       dracula-theme
+      drag-stuff
       fill-column-indicator
       flymd
       magit
@@ -80,6 +81,11 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 
+;; drag lines and regions
+(with-eval-after-load 'drag-stuff
+  (define-key drag-stuff-mode-map (kbd "<C-up>") 'drag-stuff-up)
+  (define-key drag-stuff-mode-map (kbd "<C-down>") 'drag-stuff-down))
+
 ;; Terminal
 (global-set-key (kbd "\C-x t") 'multi-term)
 
@@ -112,6 +118,7 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'fci-mode)
 (add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'prog-mode-hook 'drag-stuff-mode)
 
 ;; markdown
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
