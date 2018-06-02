@@ -12,9 +12,13 @@ Generic dotfiles repo
 
 * Enable/disable stuff in [.emacs](.emacs)
 
-## Shell setup
+## Terminal
 
-*test driving multi-term*
+* tmux just feels like it's in the way
+* multi-term is okay but get ugly sometimes (e.g. with SSH)
+* Current setup: tilix + screen
+  * detach and exit automatically close panes
+  * new-screen script automates open pane + attach
 
 ## Fix for Emacs/tramp-mode
 https://www.emacswiki.org/emacs/TrampMode#toc9
