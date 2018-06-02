@@ -10,7 +10,7 @@ msgwait 0
 # Makes terminal emulator handle scrolling etc.
 termcapinfo xterm* ti@:te@
 
-# Status line: user@host: workdir
+# Status line: user@host: shell-window-title
 # https://www.gnu.org/software/screen/manual/html_node/String-Escapes.html
 # This is usually the terminal emulator window/tab title
 # If screen status supports unicode in the future: 📺
