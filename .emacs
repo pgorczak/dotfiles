@@ -81,6 +81,9 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 
+;; comment/uncomment
+(global-set-key (kbd "C-#") 'comment-line)
+
 ;; drag lines and regions
 (with-eval-after-load 'drag-stuff
   (define-key drag-stuff-mode-map (kbd "<C-up>") 'drag-stuff-up)
