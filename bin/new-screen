@@ -2,4 +2,4 @@
 
 # Tile to the right and attach/create screen-session with first arg as name.
 # If arg is omitted, uses default naming.
-tilix -a session-add-right -x "screen -DRA %1"
+tilix -a session-add-right -x "screen -DRA $1"
