@@ -139,7 +139,7 @@
 ;; python
 (when +python
   (setq flycheck-python-flake8-executable "~/.local/bin/flake8")
-  (global-flycheck-mode))
+  (add-hook 'python-mode-hook #'flycheck-mode))
 
 ;; rust
 (when +rust
