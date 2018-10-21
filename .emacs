@@ -75,6 +75,9 @@
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist (cons 'width 85)))
 
+;; toggle filetree
+(global-set-key (kbd "<C-tab>") 'neotree-toggle)
+
 ;; multi line editing
 (require 'multiple-cursors)
 (global-set-key (kbd "C-|") 'mc/edit-lines)
