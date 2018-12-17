@@ -12,6 +12,7 @@
 ;; Requires flake8
 ;; configured below for --user installation
 (defvar +python nil)
+(defvar +ros nil)
 ;; Requires setup
 ;; https://github.com/racer-rust/racer#installation
 (defvar +rust nil)
@@ -143,6 +144,13 @@
 (when +python
   (setq flycheck-python-flake8-executable "~/.local/bin/flake8")
   (add-hook 'python-mode-hook #'flycheck-mode))
+
+;; ROS
+(when +ros
+  (add-to-list 'auto-mode-alist '("\\.launch\\'" . xml-mode))
+  (add-to-list 'auto-mode-alist '("\\.xacro\\'" . xml-mode))
+  (add-to-list 'auto-mode-alist '("\\.urdf\\'" . xml-mode))
+  (add-to-list 'auto-mode-alist '("\\.sdf\\'" . xml-mode)))
 
 ;; rust
 (when +rust
