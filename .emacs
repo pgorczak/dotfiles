@@ -11,6 +11,8 @@
 (defvar +macos nil)
 ;; Requires flake8
 ;; configured below for --user installation
+;; force flake8 to use python3:
+;; sed -r -i 's/^(#![a-z/]+)python$/\1python3/' $(which flake8)
 (defvar +python nil)
 (defvar +ros nil)
 ;; Requires setup
