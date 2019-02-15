@@ -145,7 +145,8 @@
 ;; python
 (when +python
   (setq flycheck-python-flake8-executable "~/.local/bin/flake8")
-  (add-hook 'python-mode-hook #'flycheck-mode))
+  (add-hook 'python-mode-hook #'flycheck-mode)
+  (add-hook 'python-mode-hook (lambda () (set-fill-column 79))))
 
 ;; ROS
 (when +ros
