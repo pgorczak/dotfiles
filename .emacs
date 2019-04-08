@@ -46,6 +46,8 @@
         dockerfile-mode))
     (when +python
       '(flycheck))
+    (when +ros
+      '(cmake-mode))
     (when +rust
       '(racer
         rust-mode))))
