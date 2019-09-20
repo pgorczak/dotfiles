@@ -9,11 +9,12 @@
 (defvar +clojure nil)
 (defvar +docker nil)
 (defvar +macos nil)
-;; Requires flake8
-;; configured below for --user installation
-;; force flake8 to use python3:
-;; sed -r -i 's/^(#![a-z/]+)python$/\1python3/' $(which flake8)
+;; General Python support: pip install --user flake8
+;; Pipenv support: add python-language-server[all] as dev-dependency
+;; Use ctrl+x p p to activate pipenv + lsp
 (defvar +python nil)
+;; Catkin ws support: pip install --user python-language-server[all]
+;; Use ctrl+x p r to activate catkin ws + lsp
 (defvar +ros nil)
 ;; Requires setup
 ;; https://github.com/racer-rust/racer#installation
@@ -26,10 +27,14 @@
   (append
     '(better-defaults
       company
+      company-lsp
       dracula-theme
       drag-stuff
       fill-column-indicator
+      flycheck
       flymd
+      lsp-mode
+      lsp-ui
       magit
       markdown-mode
       multi-term
@@ -45,7 +50,7 @@
       '(docker-compose-mode
         dockerfile-mode))
     (when +python
-      '(flycheck))
+      '(pipenv))
     (when +ros
       '(cmake-mode))
     (when +rust
@@ -100,6 +105,12 @@
 ;; Terminal
 (global-set-key (kbd "\C-x t") 'multi-term)
 
+;; Language server protocol (LSP)
+;; Hooks defined per language below
+(require 'lsp-mode)
+(set-variable 'lsp-enable-snippet nil)
+(set-variable 'lsp-prefer-flymake nil)
+
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
 (with-eval-after-load 'org
@@ -146,19 +157,61 @@
   (add-hook 'cider-repl-mode-hook #'company-mode)
   (add-hook 'cider-mode-hook #'company-mode))
 
-
 ;; python
 (when +python
   (setq flycheck-python-flake8-executable "~/.local/bin/flake8")
   (add-hook 'python-mode-hook #'flycheck-mode)
-  (add-hook 'python-mode-hook (lambda () (set-fill-column 79))))
+  (add-hook 'python-mode-hook (lambda () (set-fill-column 79)))
+  ;; LSP + pipenv
+  (setq-default lsp-pyls-plugins-pycodestyle-enabled nil)
+  (setq-default lsp-pyls-plugins-pydocstyle-enabled nil)
+  (setq-default lsp-pyls-plugins-pylint-enabled nil)
+  (setq-default lsp-pyls-plugins-rope-completion-enabled nil)
+  (setq-default lsp-pyls-plugins-mccabe-enabled nil)
+  (global-set-key (kbd "C-x p p") 'pipenv-mode)
+  (add-hook 'pipenv-mode-hook (lambda () (pipenv-activate) (lsp)))
+)
 
 ;; ROS
 (when +ros
   (add-to-list 'auto-mode-alist '("\\.launch\\'" . xml-mode))
   (add-to-list 'auto-mode-alist '("\\.xacro\\'" . xml-mode))
   (add-to-list 'auto-mode-alist '("\\.urdf\\'" . xml-mode))
-  (add-to-list 'auto-mode-alist '("\\.sdf\\'" . xml-mode)))
+  (add-to-list 'auto-mode-alist '("\\.sdf\\'" . xml-mode))
+  ; catkin ws mode
+  (defun catkin-root ()
+    (with-temp-buffer
+      (call-process "catkin" nil t nil "locate" "-d")
+      (goto-char (point-min))
+      (buffer-substring (point) (line-end-position))))
+  (defun catkin-pkg-root ()
+    (with-temp-buffer
+      (call-process "bash" nil t nil "-c" "catkin locate $(catkin list --unformatted --this)")
+      (goto-char (point-min))
+      (buffer-substring (point) (line-end-position))))
+  (defun catkin-env ()
+    (setq env '())
+    (with-temp-buffer
+      (call-process "bash" nil t nil "-c"
+                    ;;;"source $(catkin locate -d)/setup.bash; env | egrep 'ROS|PYTHON|^PATH|^PKG_CONFIG_PATH'")
+                    "source $(catkin locate -d)/setup.bash; env")
+      (goto-char (point-min))
+      (while (not (eobp))
+        (setq env
+              (cons (buffer-substring (point) (line-end-position)) env))
+        (forward-line 1)))
+    env)
+  (defun catkin-setup ()
+    "Activate catkin env and LSP"
+    (interactive)
+    (let ((env (catkin-env))
+          ;; Replaces the entire env with the result of setup.bash
+          (process-environment env)
+          (pkg-root (catkin-pkg-root)))
+      (push pkg-root (lsp-session-folders (lsp-session)))
+      (lsp)))
+  (global-set-key (kbd "C-x p r") 'catkin-setup)
+)
 
 ;; rust
 (when +rust
