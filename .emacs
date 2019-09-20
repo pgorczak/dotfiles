@@ -71,7 +71,7 @@
 (require 'better-defaults)
 
 ;; appearance
-(setq-default fill-column 80)
+(setq-default fill-column 79)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq neo-theme 'arrow)
 (load-theme 'dracula t)
