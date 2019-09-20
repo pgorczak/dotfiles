@@ -142,7 +142,10 @@
 ;; clj/cljs
 (when +clojure
   (add-hook 'clojure-mode-hook #'parinfer-mode)
-  (add-hook 'clojurescript-mode-hook #'parinfer-mode))
+  (add-hook 'clojurescript-mode-hook #'parinfer-mode)
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  (add-hook 'cider-mode-hook #'company-mode))
+
 
 ;; python
 (when +python
