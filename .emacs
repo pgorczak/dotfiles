@@ -39,7 +39,8 @@
       markdown-mode
       multi-term
       multiple-cursors
-      neotree)
+      neotree
+      spaceline)
     (when +clojure
       '(cider
         clojure-mode
@@ -74,6 +75,8 @@
       (package-install p))))
 
 (require 'better-defaults)
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
 
 ;; appearance
 (setq-default fill-column 79)
