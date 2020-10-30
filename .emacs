@@ -19,6 +19,8 @@
 ;; Requires setup
 ;; https://github.com/racer-rust/racer#installation
 (defvar +rust nil)
+;; Vue
+(defvar +vue nil)
 ;; Requires synced work folder
 (defvar +work nil)
 
@@ -56,7 +58,9 @@
       '(cmake-mode))
     (when +rust
       '(racer
-        rust-mode))))
+        rust-mode))
+    (when +vue
+      '(vue-mode))))
 
 ;; install my packages
 ;; http://wikemacs.org/wiki/Package.el#Install_packages_automatically_on_startup
@@ -223,3 +227,12 @@
   (add-hook 'racer-mode-hook #'company-mode)
   (require 'rust-mode)
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+
+;; Vue
+(when +vue
+  (add-hook 'vue-mode-hook 'linum-mode)
+  (add-hook 'vue-mode-hook 'fci-mode)
+  (add-hook 'vue-mode-hook 'company-mode)
+  (add-hook 'vue-mode-hook 'drag-stuff-mode)
+  (add-hook 'vue-mode-hook
+            (lambda () (set-face-background 'mmm-default-submode-face nil))))
