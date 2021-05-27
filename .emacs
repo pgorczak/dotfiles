@@ -134,9 +134,15 @@
 
 ;; OS X Stuff
 (when +macos
+  ; start in home instead of /
+  (setq default-directory "~")
+  ; make alt input work
   (setq default-input-method "MacOSX")
-  (setq mac-command-modifier 'meta
-        mac-option-modifier nil)
+  ; use CMD for Meta and option for alt input
+  (setq ns-command-modifier 'meta
+        ns-option-modifier 'none
+        ns-right-command-modifier 'super)
+  ; pull PATH variable from shell
   (require 'exec-path-from-shell)
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
