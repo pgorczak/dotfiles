@@ -121,7 +121,8 @@
 ;; Org
 (global-set-key "\C-ca" 'org-agenda)
 (with-eval-after-load 'org
-  (add-hook 'org-mode-hook #'visual-line-mode))
+  (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1))))
 
 ;; Org work and publishing
 (when +work
